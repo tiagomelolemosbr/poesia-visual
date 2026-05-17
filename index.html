@@ -1,0 +1,2136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formação Poesia Visual · Felipe Pick</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@300;400&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+  <script async src="https://tally.so/widgets/embed.js"></script>
+  <style>
+    :root {
+      --paper:    oklch(0.92 0.018 78);
+      --paper-2:  oklch(0.885 0.022 75);
+      --ink:      oklch(0.18 0.015 55);
+      --ink-soft: oklch(0.34 0.018 55);
+      --sienna:   oklch(0.5 0.12 38);
+      --gold:     oklch(0.74 0.105 75);
+      --fog:      oklch(0.82 0.014 75);
+      --rule:     oklch(0.74 0.018 65);
+      --serif:    "Cormorant Garamond", Georgia, serif;
+      --italic:   "Newsreader", "Cormorant Garamond", Georgia, serif;
+      --mono:     "JetBrains Mono", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    /* Film grain */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12  0 0 0 0 0.10  0 0 0 0 0.08  0 0 0 0.28 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      mix-blend-mode: multiply;
+      opacity: 0.3;
+    }
+
+    /* Vignette */
+    body::after {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9998;
+      background: radial-gradient(ellipse 130% 100% at 50% 50%, transparent 40%, oklch(0.14 0.012 55 / 0.15) 100%);
+    }
+
+    /* ── Animations ── */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+    .rise { animation: rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.18s; }
+    .d3 { animation-delay: 0.34s; }
+    .d4 { animation-delay: 0.50s; }
+    .d5 { animation-delay: 0.66s; }
+
+    /* ══════════════════════════════
+       NAV — mobile default
+    ══════════════════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+      background: linear-gradient(to bottom,
+        oklch(0.92 0.018 78 / 0.96) 0%,
+        oklch(0.92 0.018 78 / 0) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: var(--serif); font-weight: 300;
+      font-size: 15px; letter-spacing: -0.01em;
+      color: var(--ink); text-decoration: none;
+      white-space: nowrap; line-height: 1;
+    }
+    .nav-logo em {
+      font-family: var(--italic); font-style: italic;
+      font-weight: 300; color: var(--sienna);
+    }
+
+    /* Hidden on mobile, shown on desktop */
+    .nav-links {
+      display: none;
+      gap: 32px; list-style: none;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .nav-links a {
+      color: var(--ink-soft); text-decoration: none;
+      opacity: 0.75; transition: color 0.2s, opacity 0.2s;
+    }
+    .nav-links a:hover { color: var(--sienna); opacity: 1; }
+
+    a.nav-cta {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--paper); background: var(--ink);
+      border-radius: 999px; padding: 10px 18px;
+      text-decoration: none; white-space: nowrap;
+      transition: background 0.25s;
+    }
+    a.nav-cta:hover { background: var(--sienna); }
+
+    /* ══════════════════════════════
+       HERO — mobile default (single column)
+    ══════════════════════════════ */
+    .hero {
+      min-height: 100svh;
+      padding: 84px 20px 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .hero-left { display: flex; flex-direction: column; }
+
+    .eyebrow {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--sienna);
+      display: flex; align-items: center; gap: 9px;
+      margin-bottom: 22px;
+    }
+    .eyebrow::before {
+      content: ""; display: block;
+      width: 22px; height: 1px;
+      background: currentColor; flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(46px, 12vw, 62px);
+      line-height: 0.97; letter-spacing: -0.02em;
+      color: var(--ink); margin-bottom: 28px;
+    }
+    .h1-break { display: block; margin-top: 0.4em; }
+    .h1-primary { display: block; font-size: 1em; }
+    .h1-secondary { display: block; font-size: 0.58em; line-height: 1.1; }
+    h1 .accent {
+      font-family: var(--italic); font-style: italic;
+      font-weight: 400; color: var(--sienna);
+    }
+    h1 .caveat {
+      font-family: "Caveat", cursive;
+      font-weight: 400;
+      font-size: 1.18em;
+      line-height: 1.1;
+      letter-spacing: 0;
+      display: block;
+    }
+    h1 .caveat .accent {
+      font-family: "Caveat", cursive;
+      font-style: normal;
+      color: var(--sienna);
+    }
+
+    .hero-rule {
+      width: 36px; height: 1px;
+      background: var(--rule); margin-bottom: 20px;
+    }
+
+    p.sub {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 16px; line-height: 1.62;
+      color: var(--ink-soft);
+      margin-bottom: 36px;
+    }
+
+    a.btn-primary {
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--paper); background: var(--ink);
+      border-radius: 999px; padding: 17px 28px;
+      text-decoration: none; margin-bottom: 14px;
+      box-shadow: 0 6px 24px oklch(0.18 0.015 55 / 0.2);
+      transition: background 0.28s, transform 0.2s, box-shadow 0.28s;
+      /* full-width on mobile */
+      width: 100%;
+    }
+    a.btn-primary:active {
+      background: var(--sienna); transform: scale(0.98);
+    }
+
+    .meta-note {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ink-soft); opacity: 0.48;
+      text-align: center;
+    }
+
+    /* ── Carousel — mobile default ── */
+    .hero-right {
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+
+    .carousel-outer {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 20px;
+      width: 100%;
+    }
+
+    .carousel-stack {
+      position: relative;
+      width: min(320px, calc(100vw - 56px));
+      height: 180px;
+      /* extra horizontal room for rotated back cards */
+      margin: 0 auto;
+    }
+
+    .slide {
+      position: absolute; top: 0; left: 0; width: 100%;
+      will-change: transform, opacity;
+      transition:
+        transform 0.72s cubic-bezier(0.22, 0.61, 0.36, 1),
+        opacity   0.72s cubic-bezier(0.22, 0.61, 0.36, 1),
+        filter    0.72s ease;
+    }
+
+    .slide.is-back {
+      transform: rotate(-3.8deg) translate(-10px, 9px);
+      opacity: 0.45; z-index: 1; filter: blur(0.5px);
+    }
+    .slide.is-mid {
+      transform: rotate(2.8deg) translate(11px, 4px);
+      opacity: 0.72; z-index: 2; filter: blur(0.2px);
+    }
+    .slide.is-front {
+      transform: rotate(-0.6deg);
+      opacity: 1; z-index: 3; filter: blur(0);
+    }
+    .slide.is-exit {
+      transform: translateY(-30px) rotate(-0.6deg) scale(0.97);
+      opacity: 0; z-index: 4; pointer-events: none;
+    }
+    .slide.is-hidden {
+      transform: rotate(-3.8deg) translate(-10px, 9px);
+      opacity: 0; z-index: 0; pointer-events: none;
+    }
+
+    /* ── Instagram comment card ── */
+    .ig-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 13px 13px 11px;
+      box-shadow:
+        0 2px 8px  rgba(20,16,10,0.06),
+        0 10px 32px rgba(20,16,10,0.11),
+        0 24px 56px rgba(20,16,10,0.06);
+      border: 0.5px solid rgba(20,16,10,0.06);
+    }
+
+    .ig-row { display: flex; align-items: flex-start; gap: 10px; }
+
+    .ig-ava {
+      width: 34px; height: 34px; border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: -apple-system, sans-serif;
+      font-size: 13px; font-weight: 600; color: #fff;
+      background: #bbb; position: relative;
+    }
+    .ig-ava.ring::before {
+      content: '';
+      position: absolute; inset: -3px; border-radius: 50%;
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      z-index: -1;
+    }
+    .ig-ava.ring::after {
+      content: '';
+      position: absolute; inset: -1px; border-radius: 50%;
+      background: #fff; z-index: -1;
+    }
+
+    .ig-body { flex: 1; min-width: 0; }
+
+    .ig-text {
+      font-family: -apple-system, "SF Pro Text", sans-serif;
+      font-size: 13px; line-height: 1.42; color: #111;
+    }
+    .ig-text b { font-weight: 600; margin-right: 2px; }
+
+    .ig-verified {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 12px; height: 12px;
+      background: #0095f6; border-radius: 50%;
+      margin-left: 2px; vertical-align: middle;
+      position: relative; top: -1px;
+    }
+    .ig-verified::after {
+      content: '✓'; color: #fff; font-size: 7.5px; font-weight: 700;
+    }
+
+    .ig-actions {
+      margin-top: 5px; display: flex; gap: 12px;
+      font-family: -apple-system, sans-serif;
+      font-size: 11px; color: #8e8e8e; align-items: center;
+    }
+    .ig-actions .rpl { font-weight: 600; }
+
+    .ig-heart-btn {
+      color: #8e8e8e; font-size: 15px; line-height: 1;
+      flex-shrink: 0; align-self: center;
+      background: none; border: none; padding: 0 0 0 4px; cursor: pointer;
+      transition: color 0.15s;
+    }
+    .ig-heart-btn:hover { color: #e0405a; }
+
+    .ig-see-replies {
+      margin-top: 6px; margin-left: 44px;
+      font-family: -apple-system, sans-serif;
+      font-size: 11.5px; font-weight: 600; color: #8e8e8e; cursor: pointer;
+    }
+    .ig-see-replies::before { content: '— '; font-weight: 400; }
+
+    /* Dots */
+    .carousel-dots { display: flex; gap: 7px; align-items: center; }
+    .cdot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--rule);
+      transition: background 0.3s, width 0.3s;
+      cursor: pointer;
+    }
+    .cdot.active { background: var(--sienna); width: 18px; border-radius: 999px; }
+
+    .stack-caption {
+      font-family: var(--mono); font-size: 8.5px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--ink-soft); opacity: 0.4; text-align: center;
+    }
+
+    /* ══════════════════════════════
+       TABLET  ≥ 640px
+    ══════════════════════════════ */
+    @media (min-width: 640px) {
+      .nav { height: 66px; padding: 0 32px; }
+      .nav-logo { font-size: 16px; }
+      a.nav-cta { font-size: 10px; padding: 11px 22px; }
+
+      .hero { padding: 100px 32px 72px; gap: 48px; }
+
+      h1 { font-size: clamp(52px, 9vw, 76px); font-weight: 400; margin-bottom: 32px; }
+      p.sub { font-size: 17px; }
+
+      a.btn-primary {
+        width: auto; align-self: flex-start;
+        font-size: 11px; padding: 17px 34px;
+      }
+      .meta-note { text-align: left; font-size: 9.5px; }
+
+      .carousel-stack { width: 340px; height: 190px; }
+    }
+
+    /* ══════════════════════════════
+       DOBRA 2
+    ══════════════════════════════ */
+    .sec2 {
+      padding: 72px 20px 80px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .d2-title {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(26px, 7.5vw, 36px);
+      line-height: 1.08; letter-spacing: -0.015em;
+      color: var(--ink); margin-bottom: 32px;
+    }
+    .d2-title em {
+      font-family: var(--italic); font-style: italic;
+      font-weight: 400; color: var(--sienna);
+    }
+
+    /* Toggle pill */
+    .d2-toggle {
+      display: flex; background: var(--paper-2);
+      border-radius: 999px; padding: 4px;
+      margin-bottom: 36px; position: relative;
+    }
+    .d2-btn {
+      flex: 1; font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-soft); background: none; border: none;
+      border-radius: 999px; padding: 11px 8px;
+      cursor: pointer; position: relative; z-index: 1;
+      transition: color 0.3s;
+    }
+    .d2-btn.active { color: var(--paper); }
+    .d2-pill {
+      position: absolute; top: 4px; bottom: 4px; left: 4px;
+      width: calc(50% - 4px); border-radius: 999px;
+      background: var(--ink);
+      transition: left 0.38s cubic-bezier(0.22, 0.61, 0.36, 1), background 0.38s ease;
+    }
+    .d2-toggle.is-com .d2-pill { left: 50%; background: var(--sienna); }
+
+    /* Panels */
+    .d2-panel { display: none; flex-direction: column; }
+    .d2-panel.active { display: flex; }
+
+    /* Items */
+    @keyframes itemIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .d2-item {
+      border-top: 1px solid var(--rule);
+      padding: 20px 0;
+      display: grid; grid-template-columns: 28px 1fr;
+      gap: 14px; align-items: start;
+      animation: itemIn 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+    .d2-item:last-child { border-bottom: 1px solid var(--rule); }
+    .d2-item:nth-child(1) { animation-delay: 0.00s; }
+    .d2-item:nth-child(2) { animation-delay: 0.09s; }
+    .d2-item:nth-child(3) { animation-delay: 0.18s; }
+
+    .d2-num {
+      font-family: var(--mono); font-size: 9.5px;
+      letter-spacing: 0.08em; color: var(--sienna);
+      padding-top: 4px; opacity: 0.8;
+    }
+    .d2-text {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 16px; line-height: 1.6; color: var(--ink-soft);
+    }
+    .d2-panel[data-panel="com"] .d2-text {
+      font-family: var(--serif); font-style: normal;
+      font-weight: 400; color: var(--ink);
+    }
+
+    /* ══════════════════════════════
+       DESKTOP  ≥ 1024px
+    ══════════════════════════════ */
+    @media (min-width: 1024px) {
+      .nav { height: 70px; padding: 0 48px; }
+      .nav-logo { font-size: 17px; }
+      .nav-links { display: flex; }
+      a.nav-cta { font-size: 10px; }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 56px;
+        align-items: center;
+        padding: 130px 48px 80px;
+        min-height: 100vh;
+      }
+
+      h1 { font-size: clamp(56px, 7.8vw, 108px); font-weight: 400; margin-bottom: 36px; }
+      .hero-rule { width: 44px; margin-bottom: 26px; }
+      p.sub { font-size: clamp(16px, 1.45vw, 20px); margin-bottom: 44px; }
+      .eyebrow { font-size: 10px; margin-bottom: 30px; }
+
+      a.btn-primary {
+        width: auto; font-size: 11px; padding: 17px 34px;
+        margin-bottom: 14px;
+      }
+      a.btn-primary:hover {
+        background: var(--sienna); transform: translateY(-2px);
+        box-shadow: 0 14px 36px oklch(0.18 0.015 55 / 0.26);
+      }
+
+      .carousel-stack { width: 288px; height: 186px; }
+      .hero-right { justify-content: center; align-items: center; }
+    }
+
+    /* ══════════════════════════════
+       SEC 4 — 4 Pilares
+    ══════════════════════════════ */
+    .sec4 {
+      position: relative;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* Ring floats sticky top-right, zero layout height */
+    .s4-float {
+      position: sticky;
+      top: 68px;
+      height: 0;
+      overflow: visible;
+      z-index: 50;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 20px;
+      pointer-events: none;
+    }
+    .s4-ring-box {
+      width: 82px; height: 82px;
+      position: relative; top: 16px;
+      background: var(--paper);
+      border-radius: 50%;
+      box-shadow: 0 2px 16px oklch(0.18 0.015 55 / 0.1);
+    }
+    .s4-ring-svg { width: 82px; height: 82px; display: block; }
+    .s4-track { fill: none; stroke: var(--rule); stroke-width: 2; }
+    .s4-fill-r {
+      fill: none; stroke: var(--sienna); stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-dasharray: 220;
+      stroke-dashoffset: 220;
+      transform: rotate(-90deg);
+      transform-origin: 41px 41px;
+      transition: stroke-dashoffset 0.12s linear;
+    }
+    .s4-ring-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .s4-ring-pct {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--sienna); letter-spacing: 0.04em;
+      transition: opacity 0.3s;
+    }
+    .s4-ring-pv-sm {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 9.5px; line-height: 1.2; color: var(--ink);
+      text-align: center;
+      position: absolute; opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .s4-ring-pv-sm.on { opacity: 1; }
+    .s4-ring-pct.off { opacity: 0; }
+
+    /* Section header */
+    .s4-header {
+      padding: 56px 20px 40px;
+    }
+    .s4-kicker {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--sienna); display: block; margin-bottom: 12px;
+    }
+    .s4-title {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(36px, 10vw, 54px);
+      line-height: 0.95; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0;
+    }
+    .s4-title em {
+      font-family: var(--italic); font-style: italic;
+      font-weight: 400; color: var(--sienna);
+    }
+
+    /* Pillar items */
+    .s4-item {
+      min-height: 42vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 36px 20px;
+      border-top: 1px solid var(--rule);
+      opacity: 0.2;
+      transition: opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .s4-item.active { opacity: 1; }
+
+    .s4-n {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--sienna); margin-bottom: 18px; display: block;
+    }
+    .s4-name {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(30px, 8.5vw, 46px);
+      line-height: 1.05; letter-spacing: -0.018em;
+      color: var(--ink); margin: 0 0 14px;
+    }
+    .s4-name em {
+      font-family: var(--italic); font-style: italic; font-weight: 400;
+    }
+    .s4-desc {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 15px; line-height: 1.62;
+      color: var(--ink-soft); max-width: 34ch; margin: 0;
+    }
+
+    /* Completion block */
+    .s4-end {
+      padding: 72px 20px 88px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 20px;
+      border-top: 1px solid var(--rule);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,0.61,0.36,1);
+    }
+    .s4-end.visible { opacity: 1; transform: translateY(0); }
+
+    .s4-end-wrap { position: relative; width: 180px; height: 180px; }
+    .s4-end-svg { width: 180px; height: 180px; display: block; }
+    .s4-end-track { fill: none; stroke: var(--rule); stroke-width: 1.5; }
+    .s4-end-fill {
+      fill: none; stroke: var(--sienna); stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-dasharray: 503;
+      stroke-dashoffset: 503;
+      transform: rotate(-90deg);
+      transform-origin: 90px 90px;
+      transition: stroke-dashoffset 1.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .s4-end-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 2px;
+    }
+    .s4-end-label {
+      font-family: var(--mono); font-size: 8px;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--sienna); opacity: 0.7;
+    }
+    .s4-end-name {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 26px; line-height: 1.05; letter-spacing: -0.01em;
+      color: var(--ink); text-align: center;
+    }
+
+    /* ══════════════════════════════
+       PILARES GRID (estático)
+    ══════════════════════════════ */
+    .sec-pg {
+      padding: 64px 20px 80px;
+      border-top: 1px solid var(--rule);
+    }
+    .pg-label {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ink-soft); opacity: 0.6;
+      display: block; margin-bottom: 20px;
+    }
+    .pg-rule { height: 1px; background: var(--rule); margin-bottom: 32px; }
+    .pg-rule-bottom { height: 1px; background: var(--rule); margin-top: 32px; }
+
+    .pg-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .pg-card {
+      padding: 28px 0;
+      border-top: 1px solid var(--rule);
+    }
+    .pg-card:first-child { border-top: none; }
+
+    .pg-icon { width: 44px; height: 44px; margin-bottom: 20px; display: block; }
+    .pg-num {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ink-soft); opacity: 0.7;
+      display: block; margin-bottom: 10px;
+    }
+    .pg-divider { width: 24px; height: 1px; background: var(--rule); margin-bottom: 14px; }
+    .pg-title {
+      font-family: var(--serif); font-weight: 400;
+      font-size: 19px; line-height: 1.25; color: var(--ink);
+      margin: 0 0 10px;
+    }
+    .pg-title em {
+      font-family: var(--italic); font-style: italic; font-weight: 400;
+    }
+    .pg-desc {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 13.5px; line-height: 1.65; color: var(--ink-soft);
+      margin: 0;
+    }
+
+    @media (min-width: 640px) {
+      .pg-grid { grid-template-columns: 1fr 1fr; gap: 0; }
+      .pg-card { padding: 28px 24px; }
+      .pg-card:nth-child(odd) { padding-left: 0; }
+      .pg-card:nth-child(even) { border-left: 1px solid var(--rule); }
+      .pg-card:nth-child(1),
+      .pg-card:nth-child(2) { border-top: none; }
+    }
+
+    @media (min-width: 1024px) {
+      .pg-grid { grid-template-columns: repeat(4, 1fr); }
+      .pg-card {
+        padding: 0 28px;
+        border-top: none !important;
+        border-left: 1px solid var(--rule);
+      }
+      .pg-card:first-child { border-left: none; padding-left: 0; }
+      .pg-card:last-child { padding-right: 0; }
+    }
+
+    /* ══════════════════════════════
+       SEC 5
+    ══════════════════════════════ */
+    .sec5 {
+      border-top: 1px solid var(--rule);
+    }
+
+    .s5-header {
+      padding: 72px 20px 48px;
+    }
+    .s5-kicker {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--sienna); display: block; margin-bottom: 16px;
+    }
+    .s5-headline {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: clamp(22px, 5.5vw, 32px);
+      line-height: 1.35; letter-spacing: -0.01em;
+      color: var(--ink); margin: 0; max-width: 28ch;
+    }
+
+    /* Gallery */
+    .s5-gallery-wrap { position: relative; overflow: hidden; }
+
+    .s5-gallery {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 3px;
+      height: 72svh;
+      scrollbar-width: none;
+      background: var(--ink);
+    }
+    .s5-gallery::-webkit-scrollbar { display: none; }
+
+    .s5-photo {
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      height: 100%;
+      overflow: hidden;
+      background: oklch(0.22 0.01 55);
+    }
+    .s5-photo img {
+      height: 100%; width: auto;
+      max-width: none; display: block;
+      filter: saturate(0.88) contrast(1.04);
+    }
+
+    /* Arrow buttons */
+    .s5-arrows {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .s5-arrow {
+      pointer-events: all;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      background: oklch(0.92 0.018 78 / 0.85);
+      border: none; border-radius: 50%; cursor: pointer;
+      font-size: 16px; color: var(--ink);
+      margin: 0 12px;
+      transition: background 0.2s, transform 0.15s;
+      backdrop-filter: blur(4px);
+    }
+    .s5-arrow:hover { background: var(--paper); transform: scale(1.08); }
+
+    /* Carousel — reuses hero carousel styles */
+    .s5-carousel {
+      padding: 0 20px 64px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 20px;
+    }
+
+    /* Big quote */
+    .s5-quote {
+      padding: 64px 20px 32px;
+      border-top: 1px solid var(--rule);
+    }
+    .s5-quote-main {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(32px, 9vw, 56px);
+      line-height: 1.0; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0 0 20px;
+    }
+    .s5-quote-main em {
+      font-family: var(--italic); font-style: italic;
+      color: var(--sienna);
+    }
+    .s5-quote-sub {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 17px; line-height: 1.5;
+      color: var(--ink-soft); margin: 0;
+    }
+
+    /* Marquee */
+    .s5-marquee {
+      overflow: hidden;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 20px 0;
+      margin-top: 48px;
+    }
+    .s5-marquee-track {
+      display: inline-flex;
+      animation: marquee 36s linear infinite;
+    }
+    .s5-marquee:hover .s5-marquee-track { animation-play-state: paused; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .s5-marquee-item {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      flex-shrink: 0;
+    }
+    .s5-marquee-item img {
+      height: 100px;
+      width: auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(20,16,10,0.1);
+      display: block;
+    }
+
+    /* ══════════════════════════════
+       SEC 6 — Felipe Pick
+    ══════════════════════════════ */
+    .sec6 {
+      background: var(--ink);
+      color: var(--paper);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Mobile: foto topo + texto abaixo */
+    .s6-photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .s6-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+      display: block;
+      filter: brightness(0.9) contrast(1.05);
+    }
+    .s6-photo::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom,
+        transparent 50%,
+        var(--ink) 100%);
+    }
+
+    .s6-body {
+      padding: 40px 20px 72px;
+    }
+
+    .s6-handle {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px;
+    }
+    .s6-handle svg { opacity: 0.8; }
+
+    .s6-rule {
+      height: 1px;
+      background: oklch(0.74 0.105 75 / 0.35);
+      margin-bottom: 28px;
+    }
+
+    .s6-heading {
+      margin-bottom: 36px;
+    }
+    .s6-greeting {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: clamp(28px, 7vw, 42px);
+      line-height: 1; color: var(--paper); display: block;
+      margin-bottom: 4px;
+    }
+    .s6-name {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(40px, 10vw, 64px);
+      line-height: 0.95; letter-spacing: -0.02em;
+      color: var(--paper); display: block;
+    }
+
+    .s6-paras {
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    .s6-p {
+      font-family: var(--serif); font-weight: 400;
+      font-size: 17px; line-height: 1.65;
+      color: oklch(0.82 0.01 75);
+    }
+    .s6-p strong {
+      color: var(--paper); font-weight: 400;
+    }
+    .s6-p .gold { color: var(--gold); font-weight: 400; }
+
+    /* Desktop ≥ 1024px: two columns */
+    @media (min-width: 1024px) {
+      .sec6 { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+      .s6-photo { aspect-ratio: auto; height: 100%; }
+      .s6-photo::after { background: linear-gradient(to right, transparent 60%, var(--ink) 100%); }
+      .s6-body { padding: 100px 64px 100px 56px; display: flex; flex-direction: column; justify-content: center; order: -1; }
+    }
+
+    /* ══════════════════════════════
+       SEC 7 — Oferta
+    ══════════════════════════════ */
+    .sec7 {
+      padding: 72px 20px 80px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .s7-label {
+      display: inline-block;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--ink); border: 1px solid var(--rule);
+      border-radius: 999px; padding: 7px 16px;
+      margin-bottom: 28px;
+    }
+
+    .s7-headline {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(32px, 9vw, 52px);
+      line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0 0 40px;
+    }
+    .s7-headline em {
+      font-family: var(--italic); font-style: italic;
+      font-weight: 400; color: var(--sienna);
+    }
+
+    /* Pricing card */
+    .s7-card {
+      background: var(--ink);
+      border-radius: 20px;
+      padding: 32px 24px 28px;
+      color: var(--paper);
+    }
+
+    .s7-card-name {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 24px;
+      display: block;
+    }
+
+    .s7-price-wrap { margin-bottom: 8px; }
+    .s7-price-main {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(52px, 14vw, 80px);
+      line-height: 0.9; letter-spacing: -0.025em;
+      color: var(--paper); display: flex;
+      align-items: flex-start; gap: 4px;
+    }
+    .s7-price-currency {
+      font-size: 0.38em; padding-top: 0.22em;
+      color: var(--paper); opacity: 0.7;
+      font-family: var(--mono); letter-spacing: 0.04em;
+    }
+    .s7-price-install {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 14px; color: oklch(0.72 0.01 75);
+      margin-bottom: 28px; display: block;
+    }
+
+    .s7-divider { height: 1px; background: oklch(0.35 0.01 60); margin: 0 0 24px; }
+
+    .s7-section-label {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--sienna); margin-bottom: 14px; display: block;
+    }
+
+    .s7-list {
+      list-style: none; padding: 0; margin: 0 0 24px;
+      display: flex; flex-direction: column; gap: 11px;
+    }
+    .s7-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-family: var(--serif); font-size: 15px;
+      line-height: 1.4; color: oklch(0.85 0.01 75);
+    }
+    .s7-list li .ck {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--sienna); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .s7-list li .ck svg { width: 10px; height: 10px; }
+    .s7-list.bonus li .ck { background: var(--gold); }
+
+    /* CTA */
+    a.s7-cta {
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink); background: var(--paper);
+      border-radius: 999px; padding: 18px 28px;
+      text-decoration: none; margin-top: 28px;
+      transition: background 0.25s, transform 0.2s;
+      font-weight: 400;
+    }
+    a.s7-cta:hover { background: var(--gold); transform: translateY(-1px); }
+
+    /* Guarantee */
+    .s7-guarantee {
+      margin-top: 28px;
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 20px;
+      background: var(--paper-2);
+      border-radius: 14px;
+    }
+    .s7-guarantee-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--ink); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .s7-guarantee-icon svg { color: var(--paper); width: 16px; height: 16px; }
+    .s7-guarantee-text {
+      font-family: var(--serif); font-size: 14px; line-height: 1.6;
+      color: var(--ink-soft);
+    }
+    .s7-guarantee-text strong { color: var(--ink); font-weight: 400; }
+
+    /* ══════════════════════════════
+       SEC 8 — FAQ
+    ══════════════════════════════ */
+    .sec8 {
+      padding: 72px 20px 80px;
+      border-top: 1px solid var(--rule);
+    }
+    .s8-kicker {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--sienna); display: block; margin-bottom: 12px;
+    }
+    .s8-title {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(30px, 8vw, 44px);
+      line-height: 1.05; letter-spacing: -0.015em;
+      color: var(--ink); margin: 0 0 40px;
+    }
+
+    .faq-item {
+      border-top: 1px solid var(--rule);
+    }
+    .faq-item:last-child { border-bottom: 1px solid var(--rule); }
+
+    .faq-q {
+      width: 100%; background: none; border: none;
+      padding: 20px 0;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px; cursor: pointer; text-align: left;
+    }
+    .faq-q-text {
+      font-family: var(--serif); font-weight: 400;
+      font-size: 17px; line-height: 1.35; color: var(--ink);
+    }
+    .faq-icon {
+      width: 20px; height: 20px; flex-shrink: 0;
+      color: var(--sienna); transition: transform 0.35s ease;
+    }
+    .faq-item.open .faq-icon { transform: rotate(180deg); }
+
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .faq-item.open .faq-a { max-height: 400px; }
+
+    .faq-a-inner {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 16px; line-height: 1.65;
+      color: var(--ink-soft); padding: 0 0 22px;
+    }
+
+    /* ══════════════════════════════
+       SEC 9 — P.S. + Footer
+    ══════════════════════════════ */
+    .sec9 {
+      padding: 0 20px 72px;
+    }
+    .s9-card {
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      padding: 28px 24px 32px;
+      background: var(--paper);
+    }
+    .s9-ps {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--ink-soft); opacity: 0.5;
+      display: block; margin-bottom: 14px;
+    }
+    .s9-text {
+      font-family: var(--serif); font-weight: 400;
+      font-size: 18px; line-height: 1.55;
+      color: var(--ink); margin: 0 0 22px;
+    }
+    a.s9-link {
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    a.s9-link:hover { color: var(--sienna); border-color: var(--sienna); }
+
+    /* Footer */
+    .footer {
+      background: var(--ink);
+      padding: 48px 20px 40px;
+    }
+    .footer-brand {
+      font-family: var(--serif); font-weight: 400;
+      font-size: 22px; letter-spacing: -0.01em;
+      color: var(--paper); margin-bottom: 8px;
+      display: block;
+    }
+    .footer-brand em {
+      font-family: var(--italic); font-style: italic;
+      color: var(--sienna);
+    }
+    .footer-sub {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 14px; color: oklch(0.65 0.01 70);
+      margin-bottom: 32px; display: block;
+    }
+    .footer-rule { height: 1px; background: oklch(0.28 0.01 60); margin-bottom: 20px; }
+    .footer-copy {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: oklch(0.45 0.01 65);
+    }
+
+    /* ══════════════════════════════
+       LARGE  ≥ 1280px
+    ══════════════════════════════ */
+    @media (min-width: 1280px) {
+      .nav { padding: 0 64px; }
+      .hero { padding: 130px 64px 80px; }
+      .carousel-stack { width: 320px; height: 200px; }
+    }
+
+    /* ══════════════════════════════
+       SCROLL REVEAL (global)
+    ══════════════════════════════ */
+    .sr {
+      opacity: 0; transform: translateY(18px);
+      transition: opacity 0.62s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  transform 0.62s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .sr.visible { opacity: 1; transform: translateY(0); }
+    .sr-d1 { transition-delay: 0.08s; }
+    .sr-d2 { transition-delay: 0.18s; }
+
+    /* ══════════════════════════════
+       SEC 3 — Imagina como seria
+    ══════════════════════════════ */
+    .sec3 {
+      padding: 80px 20px 88px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .s3-kicker {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--sienna); display: block;
+      margin-bottom: 12px;
+    }
+    .s3-title {
+      font-family: var(--italic); font-style: italic;
+      font-weight: 300;
+      font-size: clamp(54px, 15vw, 84px);
+      line-height: 0.88; letter-spacing: -0.03em;
+      color: var(--ink); margin: 0 0 56px;
+    }
+
+    .s3-block { margin-bottom: 44px; }
+
+    .s3-text {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 17px; line-height: 1.68;
+      color: var(--ink-soft); margin: 0 0 18px;
+    }
+    .s3-text em {
+      font-style: italic; color: var(--ink);
+      font-family: var(--italic);
+    }
+
+    /* Inline IG comment inside sec3 */
+    .s3-ig {
+      background: #fff; border-radius: 14px;
+      padding: 13px 13px 11px;
+      box-shadow: 0 2px 8px rgba(20,16,10,0.05),
+                  0 10px 28px rgba(20,16,10,0.09);
+      border: 0.5px solid rgba(20,16,10,0.06);
+    }
+
+    .s3-rule {
+      height: 1px; background: var(--rule);
+      margin: 56px 0;
+    }
+
+    .s3-closing {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(22px, 6vw, 32px);
+      line-height: 1.3; letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .s3-closing em {
+      font-family: var(--italic); font-style: italic;
+      color: var(--sienna);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a class="nav-logo" href="#">Formação <em>Poesia Visual</em></a>
+  <ul class="nav-links">
+    <li><a href="#">Programa</a></li>
+    <li><a href="#">Módulos</a></li>
+    <li><a href="#">Instrutor</a></li>
+    <li><a href="#">Depoimentos</a></li>
+    <li><a href="#">Investimento</a></li>
+  </ul>
+  <a class="nav-cta" href="#" data-tally-open="GxqLJO" data-tally-layout="modal" data-tally-align-left="1" data-tally-emoji-text="📸" data-tally-emoji-animation="wave" data-tally-form-events-forwarding="1">Quero o acesso →</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+
+  <!-- Left: copy + CTA -->
+  <div class="hero-left">
+
+    <h1 class="rise d2">
+      <span class="h1-primary">Qualquer fotógrafo<br>aprende técnica.</span>
+      <span class="h1-break"></span>
+      <span class="h1-secondary">Poucos desenvolvem<br><span class="accent">identidade.</span></span>
+    </h1>
+
+    <div class="hero-rule rise d3"></div>
+
+    <p class="sub rise d3">
+      Construa uma identidade visual própria, atraia clientes
+      pelo seu olhar e pare de competir por preço.
+    </p>
+
+    <a class="btn-primary rise d4" href="#" data-tally-open="GxqLJO" data-tally-layout="modal" data-tally-align-left="1" data-tally-emoji-text="📸" data-tally-emoji-animation="wave" data-tally-form-events-forwarding="1">
+      Quero construir minha identidade →
+    </a>
+  </div>
+
+  <!-- Right: testimonial image carousel -->
+  <div class="hero-right rise d5">
+    <div class="carousel-outer">
+      <div class="carousel-stack" id="carousel">
+
+        <!-- 1 -->
+        <div class="slide is-hidden">
+          <div class="ig-card">
+            <div class="ig-row">
+              <div class="ig-ava ring" style="background:#2d2d2d">a</div>
+              <div class="ig-body">
+                <div class="ig-text"><b>anthony_stjernehimmel</b> Absolute legend. That's definitely a sign</div>
+                <div class="ig-actions"><span>1 sem</span><span>1 curtida</span><span class="rpl">Responder</span><span>Ver tradução</span></div>
+              </div>
+              <button class="ig-heart-btn">♡</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="slide is-hidden">
+          <div class="ig-card">
+            <div class="ig-row">
+              <div class="ig-ava" style="background:#6b7c8a">t</div>
+              <div class="ig-body">
+                <div class="ig-text"><b>theo_1100crf</b> Rien de mieux que la photo! Elles sont magnifiques 😍😍</div>
+                <div class="ig-actions"><span>4 d</span><span class="rpl">Responder</span></div>
+              </div>
+              <button class="ig-heart-btn">♡</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="slide is-back">
+          <div class="ig-card">
+            <div class="ig-row">
+              <div class="ig-ava ring" style="background:#c4816a">g</div>
+              <div class="ig-body">
+                <div class="ig-text"><b>gabriela.wollmann</b> A beleza dessas fotos 🥹🥹🥹</div>
+                <div class="ig-actions"><span>1 sem</span><span>1 curtida</span><span class="rpl">Responder</span></div>
+              </div>
+              <button class="ig-heart-btn">♡</button>
+            </div>
+            <div class="ig-see-replies">Ver respostas (1)</div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="slide is-mid">
+          <div class="ig-card">
+            <div class="ig-row">
+              <div class="ig-ava ring" style="background:#8b6d5a">t</div>
+              <div class="ig-body">
+                <div class="ig-text"><b>themiqueiias</b> Essa claridade nas fotos, me lembra a fotografia dos filmes de Antes do amanhecer, incrível 👏</div>
+                <div class="ig-actions"><span>2 sem</span><span>5 curtidas</span><span class="rpl">Responder</span></div>
+              </div>
+              <button class="ig-heart-btn">♡</button>
+            </div>
+            <div class="ig-see-replies">Ver respostas (1)</div>
+          </div>
+        </div>
+
+        <!-- 5 — front -->
+        <div class="slide is-front">
+          <div class="ig-card">
+            <div class="ig-row">
+              <div class="ig-ava" style="background:#555">p</div>
+              <div class="ig-body">
+                <div class="ig-text"><b>ph_emersonlima</b><span class="ig-verified"></span> Arte com identidade -, seu trabalho é diferenciado, Parabéns! 🤝📷</div>
+                <div class="ig-actions"><span>1 sem</span><span class="rpl">Responder</span></div>
+              </div>
+              <button class="ig-heart-btn">♡</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="slide is-hidden">
+          <div class="ig-card">
+            <div class="ig-row">
+              <div class="ig-ava ring" style="background:#a87868">m</div>
+              <div class="ig-body">
+                <div class="ig-text"><b>mapagrolim</b> Obrigada por partilhar, parece um sonho ao vivo e em cores. Quanta beleza, fico estarrecida.</div>
+                <div class="ig-actions"><span>3 sem</span><span>1 curtida</span><span class="rpl">Responder</span></div>
+              </div>
+              <button class="ig-heart-btn">♡</button>
+            </div>
+            <div class="ig-see-replies">Ver respostas (1)</div>
+          </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="slide is-hidden">
+          <div class="ig-card">
+            <div class="ig-row">
+              <div class="ig-ava ring" style="background:#333">t</div>
+              <div class="ig-body">
+                <div class="ig-text"><b>tiago.siviero</b> @felipe.pick cinema absoluto 🙏🎥😄</div>
+                <div class="ig-actions"><span>5 sem</span><span>1 curtida</span><span class="rpl">Responder</span></div>
+              </div>
+              <button class="ig-heart-btn">♡</button>
+            </div>
+            <div class="ig-see-replies">Ver respostas (1)</div>
+          </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="slide is-hidden">
+          <div class="ig-card">
+            <div class="ig-row">
+              <div class="ig-ava ring" style="background:#7a5c48">m</div>
+              <div class="ig-body">
+                <div class="ig-text"><b>maiconbukater</b> Que composição incrível! Suas fotos sempre me deixam sem palavras.</div>
+                <div class="ig-actions"><span>110 sem</span><span>2 curtidas</span><span class="rpl">Responder</span></div>
+              </div>
+              <button class="ig-heart-btn">♡</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Navigation dots -->
+      <div class="carousel-dots" id="dots"></div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- ── DOBRA 2 — Identidade única ── -->
+<section class="sec2">
+
+  <h2 class="d2-title" id="d2-title">
+    Sem uma <em>identidade</em> única
+  </h2>
+
+  <div class="d2-toggle" id="d2-toggle">
+    <button class="d2-btn active" data-state="sem">Sem identidade</button>
+    <button class="d2-btn"        data-state="com">Com identidade</button>
+    <div class="d2-pill"></div>
+  </div>
+
+  <!-- SEM -->
+  <div class="d2-panel active" data-panel="sem">
+    <div class="d2-item">
+      <span class="d2-num">01</span>
+      <p class="d2-text">A agenda oscila. Um mês cheia, o próximo vazio — sem saber o que muda entre os dois.</p>
+    </div>
+    <div class="d2-item">
+      <span class="d2-num">02</span>
+      <p class="d2-text">Quando tenta cobrar mais, o cliente some ou pede desconto. Os que ficam, ficam pelo preço.</p>
+    </div>
+    <div class="d2-item">
+      <span class="d2-num">03</span>
+      <p class="d2-text">Compra equipamento, testa preset, assiste curso. Continua no mesmo lugar.</p>
+    </div>
+  </div>
+
+  <!-- COM -->
+  <div class="d2-panel" data-panel="com">
+    <div class="d2-item">
+      <span class="d2-num">01</span>
+      <p class="d2-text">O cliente chega já sabendo que é você que ele quer. Não pergunta sobre equipamento. Não pede desconto.</p>
+    </div>
+    <div class="d2-item">
+      <span class="d2-num">02</span>
+      <p class="d2-text">O feed conta uma história. Cada imagem pertence ao mesmo universo — o seu.</p>
+    </div>
+    <div class="d2-item">
+      <span class="d2-num">03</span>
+      <p class="d2-text">A captação para de ser sorte. Vira consequência.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ── SEC 4 — 4 Pilares ── -->
+<section class="sec4" id="sec4">
+
+  <!-- Floating ring: stays visible as user scrolls, zero layout height -->
+  <div class="s4-float">
+    <div class="s4-ring-box">
+      <svg class="s4-ring-svg" viewBox="0 0 82 82">
+        <circle class="s4-track" cx="41" cy="41" r="35"/>
+        <circle class="s4-fill-r" cx="41" cy="41" r="35" id="s4-ring"/>
+      </svg>
+      <div class="s4-ring-inner">
+        <span class="s4-ring-pct" id="s4-pct">0%</span>
+        <span class="s4-ring-pv-sm" id="s4-pv">Poesia<br>Visual</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="s4-header">
+    <span class="s4-kicker">Os 4 pilares</span>
+    <h2 class="s4-title">Identidade<br>em <em>tudo.</em></h2>
+  </div>
+
+  <!-- Pillar 1 -->
+  <div class="s4-item" data-pillar="1">
+    <span class="s4-n">01 · Fotos</span>
+    <h3 class="s4-name">Identidade <em>nas fotos</em></h3>
+    <p class="s4-desc">Identidade única que faz suas fotos serem reconhecidas sem assinatura.</p>
+  </div>
+
+  <!-- Pillar 2 -->
+  <div class="s4-item" data-pillar="2">
+    <span class="s4-n">02 · Edição</span>
+    <h3 class="s4-name">Identidade <em>na edição</em></h3>
+    <p class="s4-desc">Uma paleta que não imita ninguém, construída a partir da sua visão de mundo.</p>
+  </div>
+
+  <!-- Pillar 3 -->
+  <div class="s4-item" data-pillar="3">
+    <span class="s4-n">03 · Serviço</span>
+    <h3 class="s4-name">Identidade <em>no serviço</em></h3>
+    <p class="s4-desc">Uma experiência de atendimento que comunica o mesmo que as suas fotos.</p>
+  </div>
+
+  <!-- Pillar 4 -->
+  <div class="s4-item" data-pillar="4">
+    <span class="s4-n">04 · Redes</span>
+    <h3 class="s4-name">Identidade <em>nas redes sociais</em></h3>
+    <p class="s4-desc">Um perfil que atrai o cliente certo, sem te prender no Instagram.</p>
+  </div>
+
+  <!-- Completion -->
+  <div class="s4-end" id="s4-end">
+    <div class="s4-end-wrap">
+      <svg class="s4-end-svg" viewBox="0 0 180 180">
+        <circle class="s4-end-track" cx="90" cy="90" r="80"/>
+        <circle class="s4-end-fill" cx="90" cy="90" r="80" id="s4-end-ring"/>
+      </svg>
+      <div class="s4-end-inner">
+        <span class="s4-end-label">Formação</span>
+        <span class="s4-end-name">Poesia<br>Visual</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+
+<!-- ── SEC 5 ── -->
+<section class="sec5">
+
+  <!-- Cabeçalho -->
+  <div class="s5-header sr">
+    <span class="s5-kicker">Identidade em ação</span>
+    <p class="s5-headline">Isso é o que acontece quando você tem uma identidade única.</p>
+  </div>
+
+  <!-- Galeria horizontal com swipe / setas -->
+  <div class="s5-gallery-wrap">
+    <div class="s5-gallery" id="s5gallery">
+      <div class="s5-photo"><img src="fotos/01-casamento-danca.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/02-familia-cama.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/03-casal-lago.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/04-casal-bw.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/05-casal-parque.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/06-gestante-campo.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/07-gestante-floresta.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/08-gestante-casal.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/09-veado-bw.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/10-veado-cor.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/11-animais.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/12-familia-margaridas.jpg" alt=""></div>
+      <div class="s5-photo"><img src="fotos/13-casal-biblioteca.jpg" alt=""></div>
+    </div>
+    <div class="s5-arrows">
+      <button class="s5-arrow" id="s5prev">&#8592;</button>
+      <button class="s5-arrow" id="s5next">&#8594;</button>
+    </div>
+  </div>
+
+  <!-- Carousel de comentários (mesmo efeito da dobra 1) -->
+  <div class="s5-carousel sr sr-d1">
+    <div class="carousel-stack" id="carousel2">
+
+      <div class="slide is-hidden">
+        <div class="ig-card">
+          <div class="ig-row">
+            <div class="ig-ava ring" style="background:#b07a6a">m</div>
+            <div class="ig-body">
+              <div class="ig-text"><b>ma_iacobucci</b> Superou todas as nossas expectativas que já eram altas! Muito obrigada mais uma vez 🙏🙏🙏</div>
+              <div class="ig-actions"><span>2 sem</span><span>4 curtidas</span><span class="rpl">Responder</span></div>
+            </div>
+            <button class="ig-heart-btn">♡</button>
+          </div>
+          <div class="ig-see-replies">Ver respostas (1)</div>
+        </div>
+      </div>
+
+      <div class="slide is-hidden">
+        <div class="ig-card">
+          <div class="ig-row">
+            <div class="ig-ava ring" style="background:#7a6a8a">b</div>
+            <div class="ig-body">
+              <div class="ig-text"><b>belabrisaassessoria</b> Que ensaio fotográfico LINDO! Parabéns pelo trabalho 👏👏 VIVA OS NOIVOS!! 💍💗✨</div>
+              <div class="ig-actions"><span>2 sem</span><span>2 curtidas</span><span class="rpl">Responder</span></div>
+            </div>
+            <button class="ig-heart-btn">♡</button>
+          </div>
+          <div class="ig-see-replies">Ver respostas (1)</div>
+        </div>
+      </div>
+
+      <div class="slide is-back">
+        <div class="ig-card">
+          <div class="ig-row">
+            <div class="ig-ava ring" style="background:#4a3a5a">i</div>
+            <div class="ig-body">
+              <div class="ig-text"><b>isabellaonofre</b><span class="ig-verified"></span> que fotos liiiindas 🥹</div>
+              <div class="ig-actions"><span>2 sem</span><span>2 curtidas</span><span class="rpl">Responder</span></div>
+            </div>
+            <button class="ig-heart-btn">♡</button>
+          </div>
+          <div class="ig-see-replies">Ver respostas (1)</div>
+        </div>
+      </div>
+
+      <div class="slide is-mid">
+        <div class="ig-card">
+          <div class="ig-row">
+            <div class="ig-ava ring" style="background:#8a6a4a">a</div>
+            <div class="ig-body">
+              <div class="ig-text"><b>amanda.souza.garcia</b> Mew, essas fotos ficaram tao tudo. Me passa o contato plsssss.</div>
+              <div class="ig-actions"><span>3 sem</span><span>1 curtida</span><span class="rpl">Responder</span></div>
+            </div>
+            <button class="ig-heart-btn">♡</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide is-front">
+        <div class="ig-card">
+          <div class="ig-row">
+            <div class="ig-ava ring" style="background:#6a4a3a">a</div>
+            <div class="ig-body">
+              <div class="ig-text"><b>anaflavialexandre</b> sem namorado, sem noivo e longe de casar, mas salvei o vídeo porque quero as fotos exatamente assim 😍</div>
+              <div class="ig-actions"><span>109 sem</span><span>3 curtidas</span><span class="rpl">Responder</span></div>
+            </div>
+            <button class="ig-heart-btn">♡</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="carousel-dots" id="dots2"></div>
+  </div>
+
+  <!-- Frase grande -->
+  <div class="s5-quote sr">
+    <h2 class="s5-quote-main">Faltam fotógrafos<br><em>assim</em> em todos os lugares.</h2>
+    <p class="s5-quote-sub">Não falta mercado. Falta identidade.</p>
+  </div>
+
+  <!-- Depoimentos rolando -->
+  <!--
+    Prints dos comentários: salve os screenshots na pasta comentarios/
+    com os nomes abaixo (pode ser .jpg ou .png):
+    01-ma-iacobucci.jpg        02-belabrisaassessoria.jpg
+    03-isabellaonofre.jpg      04-amanda-souza.jpg
+    05-p4ulloryan.jpg          06-rafaela-photos.jpg
+    07-morelli-ketilyn.jpg     08-ste-dmt.jpg
+    09-evelyncnha.jpg          10-elaine-roberta.jpg
+    11-vitoria-silva.jpg       12-anaflavialexandre.jpg
+    13-gessicamoreirago.jpg    14-emillymanuellay.jpg
+    15-tayhadak.jpg
+  -->
+  <div class="s5-marquee">
+    <div class="s5-marquee-track">
+      <!-- Set 1 — comentários 4, 5, 6, 7, 8, 11, 13, 14, 15 -->
+      <div class="s5-marquee-item"><img src="comentarios/04-amanda-souza.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/05-p4ulloryan.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/06-rafaela-photos.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/07-morelli-ketilyn.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/08-ste-dmt.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/11-vitoria-silva.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/13-gessicamoreirago.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/14-emillymanuellay.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/15-tayhadak.png" alt=""></div>
+      <!-- Set 2 — duplicado para loop contínuo -->
+      <div class="s5-marquee-item"><img src="comentarios/04-amanda-souza.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/05-p4ulloryan.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/06-rafaela-photos.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/07-morelli-ketilyn.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/08-ste-dmt.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/11-vitoria-silva.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/13-gessicamoreirago.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/14-emillymanuellay.png" alt=""></div>
+      <div class="s5-marquee-item"><img src="comentarios/15-tayhadak.png" alt=""></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ── SEC 6 — Felipe Pick ── -->
+<section class="sec6">
+
+  <!-- Foto -->
+  <div class="s6-photo">
+    <img src="fotos/felipe-portrait.jpg" alt="Felipe Pick">
+  </div>
+
+  <!-- Texto -->
+  <div class="s6-body">
+
+    <div class="s6-handle">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      O instrutor
+    </div>
+
+    <div class="s6-rule"></div>
+
+    <div class="s6-heading">
+      <span class="s6-name" style="font-size: clamp(26px, 6.5vw, 44px); line-height: 1.1; letter-spacing: -0.015em">
+        Ensinado por quem parou de competir por preço — e passou a ser procurado pela identidade.
+      </span>
+    </div>
+
+    <div class="s6-paras">
+      <p class="s6-p">
+        Sou Felipe Pick, fotógrafo especializado em família, casamentos e ensaios.
+      </p>
+      <p class="s6-p">
+        Comecei como a maioria: melhorando técnica, trocando equipamento, tentando me destacar num mercado onde todo mundo parecia fazer a mesma coisa.
+      </p>
+      <p class="s6-p">
+        O ponto de virada veio quando entendi que o problema não era o que eu sabia fazer — era que o meu trabalho não tinha um olhar reconhecível. Não tinha identidade.
+      </p>
+      <p class="s6-p">
+        A partir daí, passei a construir coerência em tudo: na forma como fotografo, na forma como edito, na forma como atendo e na forma como me apresento. Quando esses quatro elementos passaram a falar a mesma língua, o mercado respondeu diferente.
+      </p>
+      <p class="s6-p" style="color: var(--paper); font-size: 19px; font-weight: 400;">
+        Cresci <span class="gold">7 anos em apenas 7 meses.</span>
+      </p>
+      <p class="s6-p">
+        A Formação Poesia Visual é tudo o que aprendi nesse processo — organizado para que você não precise descobrir por tentativa e erro o que já existe um caminho para construir.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ── SEC 7 — Oferta ── -->
+<section class="sec7">
+
+  <span class="s7-label sr">Oferta completa</span>
+
+  <h2 class="s7-headline sr">
+    Um olhar que você leva<br>
+    para o resto da <em>carreira.</em>
+  </h2>
+
+  <!-- Card -->
+  <div class="s7-card sr">
+
+    <span class="s7-card-name">Formação Poesia Visual</span>
+
+    <div class="s7-price-wrap">
+      <div class="s7-price-main">
+        <span class="s7-price-currency">R$</span>
+        1.500
+      </div>
+    </div>
+    <span class="s7-price-install">à vista — ou 12x de R$ 155,13</span>
+
+    <div class="s7-divider"></div>
+
+    <!-- Módulos -->
+    <ul class="s7-list">
+      <li><span class="ck"><svg viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Acesso completo ao currículo da Formação — todos os 7 módulos para construir uma identidade única que o mercado reconhece.</li>
+    </ul>
+
+    <div class="s7-divider"></div>
+
+    <!-- Bônus -->
+    <span class="s7-section-label">+ Bônus incluídos</span>
+    <ul class="s7-list bonus">
+      <li><span class="ck"><svg viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span> 3 ensaios reais gravados — veja o Felipe criar o ambiente na prática</li>
+      <li><span class="ck"><svg viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Biblioteca de Referências Cinematográficas</li>
+      <li><span class="ck"><svg viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Comunidade Poesia Visual</li>
+      <li><span class="ck"><svg viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Explodindo no Instagram</li>
+      <li><span class="ck"><svg viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Tráfego Pago para Fotógrafos</li>
+    </ul>
+
+    <a class="s7-cta" href="#" data-tally-open="GxqLJO" data-tally-layout="modal" data-tally-align-left="1" data-tally-emoji-text="📸" data-tally-emoji-animation="wave" data-tally-form-events-forwarding="1">Quero desenvolver minha identidade →</a>
+
+  </div>
+
+  <!-- Garantia -->
+  <div class="s7-guarantee sr">
+    <div class="s7-guarantee-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <p class="s7-guarantee-text">
+      <strong>Compra garantida.</strong> Experimente. Se você não gostar, cancele em até 7 dias e receba devolução integral do dinheiro.
+    </p>
+  </div>
+
+</section>
+
+<!-- ── SEC 8 — FAQ ── -->
+<section class="sec8">
+
+  <span class="s8-kicker sr">Perguntas frequentes</span>
+  <h2 class="s8-title sr">Ainda tem dúvidas?</h2>
+
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">A formação aborda aspectos técnicos da fotografia?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">Sim, mas vamos além. Além de técnicas, focamos muito no desenvolvimento do seu olhar artístico e na construção da sua identidade como fotógrafo.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Haverá suporte durante a formação?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">Sim! Além do conteúdo gravado, você terá acesso a um canal exclusivo para tirar dúvidas. Estou comprometido em apoiar sua jornada de aprendizado.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">E se eu não gostar da formação?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">Sua satisfação é minha prioridade. Oferecemos uma garantia incondicional de 7 dias. Se você não ficar satisfeito, basta nos avisar que faremos o reembolso integral, sem questionamentos.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Sou iniciante. Esta formação é para mim?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">Absolutamente! A formação foi pensada para fotógrafos em diferentes níveis. Se você está começando, vai construir bases sólidas. Se já tem experiência, vai refinar seu olhar e encontrar sua identidade única.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Preciso de equipamentos caros para aproveitar a formação?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">Não! Lembre-se: a ferramenta mais importante é o seu olhar. A formação foi desenvolvida para ser aproveitada independentemente do equipamento que você possui.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">A formação será ao vivo ou gravada?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">A formação é totalmente gravada, permitindo que você estude no seu próprio ritmo e horário. Mas não se preocupe, teremos encontros ao vivo e eu estarei sempre por perto para tirar suas dúvidas!</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Quais são as formas de pagamento disponíveis?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">Queremos facilitar ao máximo sua entrada na formação. Por isso, oferecemos três opções de pagamento: PIX, boleto bancário e cartão de crédito. Escolha a que for mais conveniente para você!</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Posso obter um certificado ao concluir a formação?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">Sim! Ao finalizar a formação, você poderá emitir seu certificado diretamente pela plataforma Hotmart. É uma ótima forma de reconhecer seu esforço e agregar valor ao seu currículo.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Por quanto tempo terei acesso ao conteúdo da formação?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">Você terá acesso completo à formação por 12 meses. Tempo mais que suficiente para absorver todo o conteúdo, praticar e transformar sua fotografia!</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Como vou acessar a formação após a compra?</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-a"><p class="faq-a-inner">Assim que sua inscrição for confirmada, você receberá as informações de acesso por e-mail e WhatsApp. A formação está hospedada na plataforma Hotmart, que é super intuitiva e fácil de usar.</p></div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ── SEC 9 — P.S. ── -->
+<section class="sec9">
+  <div class="s9-card sr">
+    <span class="s9-ps">P.S.</span>
+    <p class="s9-text">
+      Ainda em dúvida se a Formação é para você?<br>
+      Fale com o Tiago — uma das cabeças por trás da Formação.
+    </p>
+    <a class="s9-link"
+      href="https://wa.me/5561996179972?text=%F0%9F%93%B8%20Oi!%20Tudo%20bem?%20%0A%0AVim%20da%20P%C3%A1gina%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20Forma%C3%A7%C3%A3o%20Poesia%20Visual"
+      target="_blank">
+      Falar com Tiago →
+    </a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <span class="footer-brand">Formação <em>Poesia Visual</em></span>
+  <span class="footer-sub">por Felipe Pick · MMXXVI</span>
+  <div class="footer-rule"></div>
+  <span class="footer-copy">© 2026 Poesia Visual · Todos os direitos reservados</span>
+</footer>
+
+<script>
+// ── Sec 4 — ring + pilares ──
+(function () {
+  const section = document.getElementById('sec4');
+  if (!section) return;
+
+  const ring      = document.getElementById('s4-ring');
+  const endRing   = document.getElementById('s4-end-ring');
+  const pctEl     = document.getElementById('s4-pct');
+  const pvEl      = document.getElementById('s4-pv');
+  const endEl     = document.getElementById('s4-end');
+  const pillars   = Array.from(section.querySelectorAll('.s4-item'));
+
+  const CIRC_SM   = 220;   /* 2π × 35 */
+  const CIRC_LG   = 503;   /* 2π × 80 */
+  let endDone     = false;
+
+  /* --- pillar reveal via IntersectionObserver --- */
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('active');
+    });
+  }, { threshold: 0.35 });
+  pillars.forEach(p => obs.observe(p));
+
+  /* --- ring fill via scroll position --- */
+  function onScroll() {
+    const rect      = section.getBoundingClientRect();
+    const scrollable = section.offsetHeight - window.innerHeight;
+    if (scrollable <= 0) return;
+
+    const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+
+    /* fill small sticky ring */
+    ring.style.strokeDashoffset = CIRC_SM * (1 - progress);
+
+    /* ring text */
+    const pct = Math.round(progress * 100);
+    if (progress >= 0.96) {
+      pctEl.classList.add('off');
+      pvEl.classList.add('on');
+    } else {
+      pctEl.classList.remove('off');
+      pvEl.classList.remove('on');
+      pctEl.textContent = pct + '%';
+    }
+
+    /* completion block + large ring */
+    if (progress >= 0.88 && !endDone) {
+      endDone = true;
+      endEl.classList.add('visible');
+      requestAnimationFrame(() => {
+        endRing.style.strokeDashoffset = 0;
+      });
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+// ── Galeria setas ──
+(function () {
+  const gallery = document.getElementById('s5gallery');
+  const prev    = document.getElementById('s5prev');
+  const next    = document.getElementById('s5next');
+  if (!gallery) return;
+
+  function step(dir) {
+    const photos = gallery.querySelectorAll('.s5-photo');
+    const w = photos[0] ? photos[0].offsetWidth + 3 : gallery.offsetWidth;
+    gallery.scrollBy({ left: dir * w, behavior: 'smooth' });
+  }
+
+  prev.addEventListener('click', () => step(-1));
+  next.addEventListener('click', () => step(1));
+})();
+
+// ── Carousel 2 (sec5) ──
+(function () {
+  const stack  = document.getElementById('carousel2');
+  const dotsEl = document.getElementById('dots2');
+  if (!stack) return;
+  const slides = Array.from(stack.querySelectorAll('.slide'));
+  const N = slides.length;
+  let current = N - 1, timer;
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('span');
+    d.className = 'cdot' + (i === current ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function classForDiff(diff) {
+    if (diff === 0)     return 'is-front';
+    if (diff === 1)     return 'is-mid';
+    if (diff === 2)     return 'is-back';
+    if (diff === N - 1) return 'is-exit';
+    return 'is-hidden';
+  }
+  function applyClasses() {
+    slides.forEach((s, i) => {
+      s.className = 'slide ' + classForDiff((i - current + N) % N);
+    });
+    dotsEl.querySelectorAll('.cdot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+  function advance() { current = (current + 1) % N; applyClasses(); }
+  function goTo(idx) { current = idx; applyClasses(); clearInterval(timer); timer = setInterval(advance, 3600); }
+  function reset() { clearInterval(timer); timer = setInterval(advance, 3600); }
+
+  stack.addEventListener('mouseenter', () => clearInterval(timer));
+  stack.addEventListener('mouseleave', reset);
+  applyClasses();
+  timer = setInterval(advance, 3600);
+})();
+
+// ── FAQ acordeão ──
+(function () {
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // fecha todos
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      // abre o clicado (se estava fechado)
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+})();
+
+// ── Scroll reveal global ──
+(function () {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visible');
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.18 });
+  document.querySelectorAll('.sr').forEach(el => obs.observe(el));
+})();
+
+// ── Toggle dobra 2 ──
+(function () {
+  const toggle = document.getElementById('d2-toggle');
+  const title  = document.getElementById('d2-title');
+  const btns   = toggle.querySelectorAll('.d2-btn');
+  const panels = document.querySelectorAll('.d2-panel');
+
+  const titles = {
+    sem: 'Sem uma <em>identidade</em> única',
+    com: 'Com uma <em>identidade</em> única',
+  };
+
+  function switchTo(state) {
+    toggle.classList.toggle('is-com', state === 'com');
+    title.innerHTML = titles[state];
+    btns.forEach(b => b.classList.toggle('active', b.dataset.state === state));
+    panels.forEach(p => {
+      const isTarget = p.dataset.panel === state;
+      if (isTarget) {
+        p.classList.add('active');
+        p.querySelectorAll('.d2-item').forEach(item => {
+          item.style.animation = 'none';
+          void item.offsetWidth;
+          item.style.animation = '';
+        });
+      } else {
+        p.classList.remove('active');
+      }
+    });
+  }
+
+  btns.forEach(btn => btn.addEventListener('click', () => switchTo(btn.dataset.state)));
+})();
+
+(function () {
+  const stack   = document.getElementById('carousel');
+  const dotsEl  = document.getElementById('dots');
+  const slides  = Array.from(stack.querySelectorAll('.slide'));
+  const N       = slides.length;
+  let current   = N - 1; // index of the front slide
+  let timer;
+
+  /* Build dots */
+  slides.forEach((_, i) => {
+    const d = document.createElement('span');
+    d.className = 'cdot' + (i === current ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function classForDiff(diff) {
+    if (diff === 0)     return 'is-front';
+    if (diff === 1)     return 'is-mid';
+    if (diff === 2)     return 'is-back';
+    if (diff === N - 1) return 'is-exit';
+    return 'is-hidden';
+  }
+
+  function applyClasses() {
+    const allDots = dotsEl.querySelectorAll('.cdot');
+    slides.forEach((slide, i) => {
+      const diff = (i - current + N) % N;
+      slide.className = 'slide ' + classForDiff(diff);
+    });
+    allDots.forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function advance() {
+    current = (current + 1) % N;
+    applyClasses();
+  }
+
+  function goTo(idx) {
+    current = idx;
+    applyClasses();
+    resetTimer();
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(advance, 3600);
+  }
+
+  /* Pause on hover */
+  stack.addEventListener('mouseenter', () => clearInterval(timer));
+  stack.addEventListener('mouseleave', resetTimer);
+
+  applyClasses();
+  timer = setInterval(advance, 3600);
+})();
+</script>
+
+</body>
+</html>
