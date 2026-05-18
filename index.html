@@ -226,6 +226,56 @@
       display: flex; justify-content: center; align-items: flex-start;
     }
 
+    /* ── Filmstrip ── */
+    .filmstrip-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      height: 220px;
+      overflow: hidden;
+    }
+    .filmstrip {
+      width: 72px; height: 220px;
+      background: var(--ink);
+      border-radius: 4px;
+      position: relative; overflow: hidden;
+      flex-shrink: 0;
+    }
+    .filmstrip::before, .filmstrip::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0;
+      width: 8px; z-index: 2;
+      background: repeating-linear-gradient(
+        to bottom, transparent 0 6px,
+        var(--paper-2) 6px 12px, transparent 12px 18px
+      );
+      opacity: 0.2;
+    }
+    .filmstrip::before { left: 2px; }
+    .filmstrip::after  { right: 2px; }
+
+    .filmstrip-track {
+      display: flex; flex-direction: column; gap: 3px;
+      animation: filmRoll 14s linear infinite;
+    }
+    .filmstrip:nth-child(2) .filmstrip-track { animation-duration: 19s; animation-direction: reverse; }
+    .filmstrip:nth-child(3) .filmstrip-track { animation-duration: 11s; }
+
+    @keyframes filmRoll {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-50%); }
+    }
+    .filmstrip-track img {
+      width: 72px; height: 90px;
+      object-fit: cover; display: block; flex-shrink: 0;
+      filter: saturate(0.85) contrast(1.05);
+    }
+    @media (min-width: 1024px) {
+      .filmstrip-wrap { height: 440px; }
+      .filmstrip { width: 90px; height: 440px; }
+      .filmstrip-track img { width: 90px; height: 112px; }
+    }
+
     .carousel-outer {
       display: flex; flex-direction: column;
       align-items: center; gap: 20px;
@@ -1283,9 +1333,66 @@
     </a>
   </div>
 
-  <!-- Right: testimonial image carousel -->
+  <!-- Right: filmstrip + carousel -->
   <div class="hero-right rise d5">
-    <div class="carousel-outer">
+
+    <!-- Filmstrip vertical -->
+    <div class="filmstrip-wrap">
+
+      <!-- Strip 1 -->
+      <div class="filmstrip">
+        <div class="filmstrip-track">
+          <img src="fotos/01-casamento-danca.jpg" alt="">
+          <img src="fotos/06-gestante-campo.jpg" alt="">
+          <img src="fotos/09-veado-bw.jpg" alt="">
+          <img src="fotos/03-casal-lago.jpg" alt="">
+          <img src="fotos/12-familia-margaridas.jpg" alt="">
+          <!-- duplicado para loop -->
+          <img src="fotos/01-casamento-danca.jpg" alt="">
+          <img src="fotos/06-gestante-campo.jpg" alt="">
+          <img src="fotos/09-veado-bw.jpg" alt="">
+          <img src="fotos/03-casal-lago.jpg" alt="">
+          <img src="fotos/12-familia-margaridas.jpg" alt="">
+        </div>
+      </div>
+
+      <!-- Strip 2 -->
+      <div class="filmstrip">
+        <div class="filmstrip-track">
+          <img src="fotos/04-casal-bw.jpg" alt="">
+          <img src="fotos/08-gestante-casal.jpg" alt="">
+          <img src="fotos/10-veado-cor.jpg" alt="">
+          <img src="fotos/02-familia-cama.jpg" alt="">
+          <img src="fotos/05-casal-parque.jpg" alt="">
+          <!-- duplicado -->
+          <img src="fotos/04-casal-bw.jpg" alt="">
+          <img src="fotos/08-gestante-casal.jpg" alt="">
+          <img src="fotos/10-veado-cor.jpg" alt="">
+          <img src="fotos/02-familia-cama.jpg" alt="">
+          <img src="fotos/05-casal-parque.jpg" alt="">
+        </div>
+      </div>
+
+      <!-- Strip 3 -->
+      <div class="filmstrip">
+        <div class="filmstrip-track">
+          <img src="fotos/07-gestante-floresta.jpg" alt="">
+          <img src="fotos/11-animais.jpg" alt="">
+          <img src="fotos/13-casal-biblioteca.jpg" alt="">
+          <img src="fotos/felipe-portrait.jpg" alt="">
+          <img src="fotos/07-gestante-floresta.jpg" alt="">
+          <!-- duplicado -->
+          <img src="fotos/07-gestante-floresta.jpg" alt="">
+          <img src="fotos/11-animais.jpg" alt="">
+          <img src="fotos/13-casal-biblioteca.jpg" alt="">
+          <img src="fotos/felipe-portrait.jpg" alt="">
+          <img src="fotos/07-gestante-floresta.jpg" alt="">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="carousel-outer" style="display:none">
       <div class="carousel-stack" id="carousel">
 
         <!-- 1 -->
@@ -1409,6 +1516,7 @@
       <!-- Navigation dots -->
       <div class="carousel-dots" id="dots"></div>
 
+    </div>
     </div>
   </div>
 
