@@ -1076,6 +1076,18 @@
       color: var(--gold); flex-shrink: 0;
     }
 
+    a.smod-cta {
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--paper); background: var(--ink);
+      border-radius: 999px; padding: 17px 28px;
+      text-decoration: none; margin-top: 40px;
+      box-shadow: 0 6px 24px oklch(0.18 0.015 55 / 0.2);
+      transition: background 0.28s, transform 0.2s;
+    }
+    a.smod-cta:active { background: var(--sienna); transform: scale(0.98); }
+
     /* ══════════════════════════════
        SEC 7 — Oferta
     ══════════════════════════════ */
@@ -1761,6 +1773,8 @@
     </div>
 
   </div>
+
+  <a class="smod-cta sr" href="#investimento">Quero ter acesso ao conteúdo completo →</a>
 
 </section>
 
