@@ -980,6 +980,103 @@
     }
 
     /* ══════════════════════════════
+       SEC MÓDULOS — Accordion
+    ══════════════════════════════ */
+    .sec-mod {
+      padding: 72px 20px 80px;
+      border-top: 1px solid var(--rule);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .smod-label {
+      display: inline-block;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--ink); border: 1px solid var(--rule);
+      border-radius: 999px; padding: 7px 16px;
+      margin-bottom: 28px;
+    }
+
+    .smod-headline {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(32px, 9vw, 52px);
+      line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0 0 48px;
+    }
+    .smod-headline em {
+      font-family: var(--italic); font-style: italic;
+      font-weight: 400; color: var(--sienna);
+    }
+
+    .smod-accordion { display: flex; flex-direction: column; }
+
+    .smod-item { border-top: 1px solid var(--rule); }
+    .smod-item:last-child { border-bottom: 1px solid var(--rule); }
+
+    .smod-trigger {
+      width: 100%; background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 0; text-align: left;
+      color: var(--ink);
+    }
+
+    .smod-num {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.12em; color: var(--gold);
+      flex-shrink: 0; width: 20px;
+    }
+
+    .smod-title {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(17px, 4vw, 20px);
+      line-height: 1.2; flex: 1;
+      color: var(--ink);
+    }
+
+    .smod-count {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.12em; color: oklch(0.55 0.01 75);
+      flex-shrink: 0; margin-right: 4px;
+    }
+
+    .smod-icon {
+      flex-shrink: 0; width: 20px; height: 20px;
+      color: var(--ink-soft);
+      transition: transform 0.3s ease;
+    }
+    .smod-icon svg { width: 100%; height: 100%; display: block; }
+
+    .smod-trigger[aria-expanded="true"] .smod-icon {
+      transform: rotate(180deg);
+    }
+
+    .smod-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .smod-body ul {
+      list-style: none;
+      padding: 0 0 24px 36px;
+      display: flex; flex-direction: column; gap: 10px;
+      counter-reset: aula;
+    }
+    .smod-body ul li {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 15px; line-height: 1.4;
+      color: var(--ink-soft);
+      display: flex; align-items: baseline; gap: 10px;
+      counter-increment: aula;
+    }
+    .smod-body ul li::before {
+      content: "Aula " counter(aula, decimal-leading-zero);
+      font-family: var(--mono); font-style: normal;
+      font-size: 9px; letter-spacing: 0.1em;
+      color: var(--gold); flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════
        SEC 7 — Oferta
     ══════════════════════════════ */
     .sec7 {
@@ -1022,7 +1119,18 @@
       display: block;
     }
 
-    .s7-price-wrap { margin-bottom: 8px; }
+    .s7-price-wrap { margin-bottom: 20px; }
+    .s7-price-old {
+      font-family: var(--mono); font-size: 13px;
+      letter-spacing: 0.06em; color: oklch(0.55 0.01 75);
+      text-decoration: line-through; display: block;
+      margin-bottom: 4px;
+    }
+    .s7-price-por {
+      font-family: var(--italic); font-style: italic; font-weight: 300;
+      font-size: 14px; color: oklch(0.72 0.01 75);
+      display: block; margin-bottom: 4px;
+    }
     .s7-price-main {
       font-family: var(--serif); font-weight: 400;
       font-size: clamp(52px, 14vw, 80px);
@@ -1527,6 +1635,135 @@
 
 
 
+<!-- ── SEC MÓDULOS — Accordion ── -->
+<section class="sec-mod">
+
+  <span class="smod-label sr">O que você vai aprender</span>
+  <h2 class="smod-headline sr">6 módulos para construir<br><em>um olhar inconfundível</em></h2>
+
+  <div class="smod-accordion sr">
+
+    <div class="smod-item">
+      <button class="smod-trigger" aria-expanded="false">
+        <span class="smod-num">01</span>
+        <span class="smod-title">Sensibilidade</span>
+        <span class="smod-count">5 aulas</span>
+        <span class="smod-icon"><svg viewBox="0 0 16 16" fill="none"><polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="smod-body">
+        <ul>
+          <li>Introdução à sensibilidade</li>
+          <li>Beleza em tudo</li>
+          <li>Ensaio de rua</li>
+          <li>Boas práticas</li>
+          <li>Exercício: duas lentes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="smod-item">
+      <button class="smod-trigger" aria-expanded="false">
+        <span class="smod-num">02</span>
+        <span class="smod-title">Identidade</span>
+        <span class="smod-count">7 aulas</span>
+        <span class="smod-icon"><svg viewBox="0 0 16 16" fill="none"><polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="smod-body">
+        <ul>
+          <li>A importância do diferencial</li>
+          <li>Identidade no serviço</li>
+          <li>Identidade na fotografia</li>
+          <li>Alternativas para inspiração</li>
+          <li>Cinema para encontrar uma identidade</li>
+          <li>Criando um estilo</li>
+          <li>Canais do YouTube para acompanhar</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="smod-item">
+      <button class="smod-trigger" aria-expanded="false">
+        <span class="smod-num">03</span>
+        <span class="smod-title">Pré-produção</span>
+        <span class="smod-count">5 aulas</span>
+        <span class="smod-icon"><svg viewBox="0 0 16 16" fill="none"><polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="smod-body">
+        <ul>
+          <li>Tela em branco</li>
+          <li>Moodboard</li>
+          <li>Locação e instrumentos</li>
+          <li>Câmeras e lentes</li>
+          <li>Exercício pré-produção</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="smod-item">
+      <button class="smod-trigger" aria-expanded="false">
+        <span class="smod-num">04</span>
+        <span class="smod-title">Produção</span>
+        <span class="smod-count">8 aulas</span>
+        <span class="smod-icon"><svg viewBox="0 0 16 16" fill="none"><polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="smod-body">
+        <ul>
+          <li>Elementos da linguagem fotográfica pt.1</li>
+          <li>Elementos da linguagem fotográfica pt.2</li>
+          <li>Elementos da linguagem fotográfica pt.3</li>
+          <li>Elementos da linguagem fotográfica pt.4</li>
+          <li>Exercícios</li>
+          <li>Direção: Importância de conhecer os clientes</li>
+          <li>Direção: Como deixar eles à vontade</li>
+          <li>Direção: Dirigir cenas</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="smod-item">
+      <button class="smod-trigger" aria-expanded="false">
+        <span class="smod-num">05</span>
+        <span class="smod-title">Pós-produção</span>
+        <span class="smod-count">7 aulas</span>
+        <span class="smod-icon"><svg viewBox="0 0 16 16" fill="none"><polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="smod-body">
+        <ul>
+          <li>Vale a pena comprar preset?</li>
+          <li>Lightroom</li>
+          <li>Como usar as máscaras</li>
+          <li>Como fazer efeito Orton</li>
+          <li>Fluxo de trabalho</li>
+          <li>Combinando ferramentas</li>
+          <li>Exercícios tratamento de imagem</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="smod-item">
+      <button class="smod-trigger" aria-expanded="false">
+        <span class="smod-num">06</span>
+        <span class="smod-title">Vendas e marketing</span>
+        <span class="smod-count">7 aulas</span>
+        <span class="smod-icon"><svg viewBox="0 0 16 16" fill="none"><polyline points="4,6 8,10 12,6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="smod-body">
+        <ul>
+          <li>O que vendemos</li>
+          <li>Estruturando pacotes</li>
+          <li>Captando leads</li>
+          <li>Convertendo leads</li>
+          <li>Alternativas para ganhar dinheiro</li>
+          <li>Posicionamento</li>
+          <li>Quanto cobrar</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
 <!-- ── SEC 5 ── -->
 <section class="sec5" id="depoimentos">
 
@@ -1747,11 +1984,21 @@
 
     <span class="s7-card-name">Formação Poesia Visual</span>
 
+    <div class="s7-price-wrap">
+      <span class="s7-price-old">De R$ 1.500</span>
+      <span class="s7-price-por">por</span>
+      <div class="s7-price-main">
+        <span class="s7-price-currency">R$</span>
+        997
+      </div>
+    </div>
+    <span class="s7-price-install">à vista — ou 12x de R$ 103</span>
+
     <div class="s7-divider"></div>
 
     <!-- Módulos -->
     <ul class="s7-list">
-      <li><span class="ck"><svg viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Acesso completo ao currículo da Formação — todos os 7 módulos para construir uma identidade única que o mercado reconhece.</li>
+      <li><span class="ck"><svg viewBox="0 0 10 10" fill="none"><polyline points="2,5 4,7 8,3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Acesso completo ao currículo da Formação — todos os 6 módulos para construir uma identidade única que o mercado reconhece.</li>
     </ul>
 
     <div class="s7-divider"></div>
@@ -2136,6 +2383,28 @@
 
   applyClasses();
   timer = setInterval(advance, 3600);
+})();
+</script>
+
+<script>
+// Accordion módulos
+(function(){
+  document.querySelectorAll('.smod-trigger').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var expanded = this.getAttribute('aria-expanded') === 'true';
+      var body = this.nextElementSibling;
+
+      document.querySelectorAll('.smod-trigger').forEach(function(b){
+        b.setAttribute('aria-expanded', 'false');
+        b.nextElementSibling.style.maxHeight = '0';
+      });
+
+      if(!expanded){
+        this.setAttribute('aria-expanded', 'true');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
 })();
 </script>
 
